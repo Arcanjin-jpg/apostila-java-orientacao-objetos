@@ -182,7 +182,7 @@ Porém, só para entender o controle de fluxo de uma `Exception`, colocaremos o 
 1. Adicione um `try/catch` em volta do `for`, pegando `NullPointerException`.
 	O que o código imprime?
 
-	``` java
+``` java
   try {
       for (int i = 0; i <= 15; i++) {
           cc.deposita(i + 1000);
@@ -212,9 +212,9 @@ Porém, só para entender o controle de fluxo de uma `Exception`, colocaremos o 
 				System.out.println("erro: " + e);
 			}
 		}
-	```
+```
 
-	Qual é a diferença?
+Qual é a diferença?
 
 	![ {w=80}](assets/images/excecoes/null_pointer3.png)
 1. Retire o `try/catch` e coloque-o em volta da chamada do `metodo2`.
