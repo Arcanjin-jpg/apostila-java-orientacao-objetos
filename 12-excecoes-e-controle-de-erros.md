@@ -68,7 +68,7 @@ máquina de autoatendimento poderia vir a liberar a quantia desejada de dinheiro
 que o sistema não tivesse conseguido efetuar o método `saca` com sucesso, como no
 exemplo a seguir:
 
-``` java
+```java
 		Conta minhaConta = new Conta();
 		minhaConta.deposita(100);
 		
