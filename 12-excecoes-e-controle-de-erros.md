@@ -194,13 +194,14 @@ Porém, só para entender o controle de fluxo de uma `Exception`, colocaremos o 
   } catch (NullPointerException e) {
       System.out.println("erro: " + e);
   }
-	```
+
+```
 
 	![ {w=80}](assets/images/excecoes/null_pointer2.png)
 1. Em vez de fazer o `try` em torno do `for` inteiro, tente apenas com o bloco de dentro do
 	`for`:
 
-	``` java
+``` java
 		for (int i = 0; i <= 15; i++) {
 			try {
 				cc.deposita(i + 1000);
@@ -219,7 +220,7 @@ Qual é a diferença?
 	![ {w=80}](assets/images/excecoes/null_pointer3.png)
 1. Retire o `try/catch` e coloque-o em volta da chamada do `metodo2`.
 
-	``` java
+``` java
 		System.out.println("inicio do metodo1");
 		try {
 			metodo2();
@@ -227,13 +228,13 @@ Qual é a diferença?
 			System.out.println("erro: " + e);
 		}
 		System.out.println("fim do metodo1");
-	```
+```
 
 	![ {w=80}](assets/images/excecoes/null_pointer4.png)
 1. Faça a mesma coisa retirando o `try/catch` novamente e colocando-o em volta da chamada do
 	`metodo1`. Rode os códigos, o que acontece?
 
-	``` java
+``` java
 		System.out.println("inicio do main");
 		try {
 			metodo1();
@@ -241,12 +242,11 @@ Qual é a diferença?
 			System.out.println("erro: " + e);
 		}
 		System.out.println("fim do main");
-	```
+```
 
 	![ {w=80}](assets/images/excecoes/null_pointer5.png)
 
-	Repare que, a partir do momento que uma exception foi _catched_ (pega, tratada, handled),
-	a execução volta ao normal.
+Repare que, a partir do momento que uma exception foi _catched_ (pega, tratada, handled), a execução volta ao normal.
 
 
 ## Exceções de Runtime mais comuns
