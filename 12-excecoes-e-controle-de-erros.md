@@ -127,7 +127,7 @@ da array que não existe.
 1. Para aprendermos os conceitos básicos das exceptions do Java,
 	teste o seguinte código você mesmo:
 
-	``` java
+``` java
   class TesteErro {
       public static void main(String[] args) {
           System.out.println("inicio do main");
@@ -154,48 +154,31 @@ da array que não existe.
           System.out.println("fim do metodo2");
       }
   }
-	```
+  ```
+Repare o método `main` chamando `metodo1`, e este, por sua vez, chamando o `metodo2`. Cada um desses métodos pode ter suas próprias variáveis locais, isto é: o `metodo1` não enxerga as variáveis declaradas dentro do `main`, e por aí em diante.
 
-	Repare o método `main` chamando `metodo1`, e este, por sua vez, chamando o `metodo2`. Cada
-	um desses métodos pode ter suas próprias variáveis locais, isto é: o `metodo1` não enxerga as
-	variáveis declaradas dentro do `main`, e por aí em diante.
+Como o Java (e muitas das outras linguagens) faz isso? Toda invocação de método é empilhada em uma estrutura de dados que isola a área de memória de cada um. Quando um método termina (retorna), ele volta para o método que o invocou. Ele descobre isso por meio da **pilha de execução** (_stack_): basta remover o marcador que está no topo da pilha:
 
-	Como o Java (e muitas das outras linguagens) faz isso? Toda invocação de método é empilhada em
-	uma estrutura de dados que isola a área de memória de cada um. Quando um método termina
-	(retorna), ele volta para o método que o invocou. Ele descobre isso por meio da **pilha de
-	execução** (_stack_): basta remover o marcador que está no topo da pilha:
+![{w=25}](assets/images/excecoes/pilha_execucao.png)
 
-	![ {w=25}](assets/images/excecoes/pilha_execucao.png)
+Porém, o nosso `metodo2` propositadamente tem um enorme problema: está acessando uma referência nula quando o índice for igual a `6`!
 
-	Porém, o nosso `metodo2` propositadamente tem um enorme problema: está acessando
-	uma referência nula quando o índice for igual a `6`!
+Rode o código. Qual é a saída? O que isso representa? O que ela indica?
 
-	Rode o código. Qual é a saída? O que isso representa? O que ela indica?
+![{w=25}](assets/images/excecoes/null_pointer1.png)
 
-	![ {w=25}](assets/images/excecoes/null_pointer1.png)
+Essa saída é conhecida como **rastro da pilha** (_stacktrace_) e é importantíssima para o programador — tanto que, em qualquer fórum ou lista de discussão, é comum os programadores enviarem, juntamente com a descrição do problema, essa stacktrace. Mas por que isso aconteceu?
 
-	Essa saída é conhecida como **rastro da pilha** (_stacktrace_) e é importantíssima para o
-	programador - tanto que, em qualquer fórum ou lista de discussão, é comum os programadores
-	enviarem, juntamente com a descrição do problema, essa stacktrace. Mas por que isso aconteceu?
+O sistema de exceções do Java funciona da seguinte maneira: quando uma exceção é **lançada** (_throw_), a JVM entra em estado de alerta e verificará se o método atual toma alguma precaução ao **tentar** executar esse trecho de código. Como podemos ver, o `metodo2` não toma nenhuma medida diferente do que vimos até agora.
 
-	O sistema de exceções do Java funciona da seguinte maneira: quando uma exceção é **lançada**
-	(_throw_), a JVM entra em estado de alerta e verificará se o método atual toma alguma precaução
-	ao **tentar** executar esse trecho de código. Como podemos ver, o `metodo2` não
-	toma nenhuma medida diferente do que vimos até agora.
+Como o `metodo2` não está **tratando** desse problema, a JVM para a sua execução anormalmente sem esperá-lo terminar e volta um _stackframe_ para baixo, em que será feita nova verificação:  
+"o `metodo1` está se precavendo de um problema chamado `NullPointerException`?"  
+"Não..." Volta para o `main`, em que também não há proteção. Então, a JVM morre (na verdade, quem morre é apenas a `Thread` corrente; se quiser saber mais sobre isso, há um apêndice de Threads e Programação Concorrente no final da apostila).
 
-	Como o `metodo2` não está **tratando** desse problema, a JVM para a sua execução anormalmente
-	sem esperá-lo terminar e volta um _stackframe_ para baixo, em que será feita nova verificação:
-	"o `metodo1` está se precavendo de um problema chamado `NullPointerException`?"
-	"Não..." Volta para o `main`, em que também não há proteção. Então, a JVM morre (na verdade, quem
-	morre é apenas a `Thread` corrente; se quiser saber mais sobre isso, há um apêndice de Threads e Programação Concorrente no final da apostila).
+Obviamente, aqui estamos forçando esse caso e não faria sentido tomarmos cuidado com ele. É fácil arrumar um problema desses: basta verificar antes de chamar os métodos se a variável está com referência nula.
 
-	Obviamente, aqui estamos forçando esse caso e não faria sentido tomarmos cuidado com ele. É fácil
-	arrumar um problema desses: basta verificar antes de chamar os métodos se a variável está com referência nula.
+Porém, só para entender o controle de fluxo de uma `Exception`, colocaremos o código que vai **tentar** (_try_) executar o bloco perigoso e, caso o problema seja do tipo `NullPointerException`, ele será **pego** (_caught_). Repare que é interessante que cada exceção no Java tenha um tipo. Ela pode ter atributos e métodos.
 
-	Porém, só para entender o controle de fluxo de uma `Exception`, colocaremos o código que vai
-	**tentar** (_try_) executar o bloco perigoso e, caso o problema seja do tipo
-	`NullPointerException`, ele será **pego** (_caught_). Repare que é interessante que
-	cada exceção no Java tenha um tipo. Ela pode ter atributos e métodos.
 1. Adicione um `try/catch` em volta do `for`, pegando `NullPointerException`.
 	O que o código imprime?
 
